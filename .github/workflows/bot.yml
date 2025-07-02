@@ -1,0 +1,29 @@
+name: Run Telegram Bot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: |
+          echo "import os" > patch.py
+          echo "os.environ['BOT_TOKEN'] = '${{ secrets.BOT_TOKEN }}'" >> patch.py
+          type main.py >> patch.py
+          python patch.py
