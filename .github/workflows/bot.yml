@@ -25,5 +25,7 @@ jobs:
         run: |
           echo "import os" > patch.py
           echo "os.environ['BOT_TOKEN'] = '${{ secrets.BOT_TOKEN }}'" >> patch.py
-          type main.py >> patch.py
+          cat main.py >> patch.py
           python patch.py
+
+
