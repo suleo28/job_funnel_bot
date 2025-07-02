@@ -29,10 +29,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def choose_vacancy(update: Update, context: ContextTypes.DEFAULT_TYPE):
     vacancy = update.message.text
     context.user_data['vacancy'] = vacancy
-    await update.message.reply_text(f"{vacancy}:
-{vacancies[vacancy]}
-
-Подходит ли вам эта вакансия? (Да/Нет)")
+    await update.message.reply_text(
+    f"{vacancy}:\n{vacancies[vacancy]}\n\nПодходит ли вам эта вакансия? (Да/Нет)"
+)
     return QUESTIONS
 
 async def ask_questions(update: Update, context: ContextTypes.DEFAULT_TYPE):
