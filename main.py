@@ -18,8 +18,6 @@ questions = [
     "Можете ли приступить в ближайшие 3 дня?"
 ]
 
-user_data_store = {}
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_keyboard = [[k] for k in vacancies.keys()]
     markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True)
@@ -30,8 +28,11 @@ async def choose_vacancy(update: Update, context: ContextTypes.DEFAULT_TYPE):
     vacancy = update.message.text
     context.user_data['vacancy'] = vacancy
     await update.message.reply_text(
-    f"{vacancy}:\n{vacancies[vacancy]}\n\nПодходит ли вам эта вакансия? (Да/Нет)"
-)
+        f"{vacancy}:
+{vacancies[vacancy]}
+
+Подходит ли вам эта вакансия? (Да/Нет)"
+    )
     return QUESTIONS
 
 async def ask_questions(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -48,7 +49,6 @@ async def collect_answers(update: Update, context: ContextTypes.DEFAULT_TYPE):
     answer = update.message.text
     context.user_data['answers'].append(answer)
 
-    # Отсев по возрасту
     if context.user_data['q_index'] == 0:
         try:
             if int(answer) < 18:
@@ -66,7 +66,9 @@ async def collect_answers(update: Update, context: ContextTypes.DEFAULT_TYPE):
         summary = "\n".join(
             f"{questions[i]} {ans}" for i, ans in enumerate(context.user_data['answers'])
         )
-        await update.message.reply_text(f"Спасибо за ответы!\n\nВакансия: {context.user_data['vacancy']}\n{summary}\n\nМы передадим ваши данные менеджеру.")
+        await update.message.reply_text(
+            f"Спасибо за ответы!\n\nВакансия: {context.user_data['vacancy']}\n{summary}\n\nМы передадим ваши данные менеджеру."
+        )
         return ConversationHandler.END
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
